@@ -72,7 +72,7 @@ Spout::Spout()
 	
 	// Debug console window so printf works
 	FILE* pCout; // should really be freed on exit 
-	AllocConsole();
+	//AllocConsole();
 	freopen_s(&pCout, "CONOUT$", "w", stdout); 
 	printf("Spout::Spout()\n");
 	
