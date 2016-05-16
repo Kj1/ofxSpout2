@@ -52,5 +52,6 @@ void Receiver::updateTexture() {
 }
 
 void Receiver::exit() {
-	mReceiver->ReleaseReceiver();
+	if(mReceiver != NULL && mbInitialized)
+		mReceiver->ReleaseReceiver();
 }
