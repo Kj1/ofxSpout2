@@ -5,7 +5,7 @@
 	The main SDK include file
 
 
-		Copyright (c) 2014>, Lynn Jarvis. All rights reserved.
+		Copyright (c) 2014-2015, Lynn Jarvis. All rights reserved.
 
 		Redistribution and use in source and binary forms, with or without modification, 
 		are permitted provided that the following conditions are met:
@@ -28,7 +28,7 @@
 		OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-
+#pragma once
 #ifndef __SpoutSDK__
 #define __SpoutSDK__
 
@@ -37,8 +37,16 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "Shellapi.h"
-#include <Mmsystem.h>		// for timegettime
+#include <Mmsystem.h> // for timegettime
+#include <direct.h> // for _getcwd
+#include <shlwapi.h> // for path functions
+#include "Shellapi.h" // for shellexecute
+
+#pragma comment(lib, "shlwapi.lib") // for path functions
+#pragma comment(lib, "Shell32.lib") // for shellexecute
+#pragma comment(lib, "Advapi32.lib") // for registry functions
+#pragma comment(lib, "Version.lib") // for VersionInfo API
+
 
 #include "SpoutCommon.h"
 #include "spoutMemoryShare.h"
@@ -50,6 +58,7 @@
 // #elif defined(__i386) || defined(_M_IX86)
 //	x86 32-bit
 #endif
+
 class SPOUT_DLLEXP Spout {
 
 	public:
@@ -72,26 +81,32 @@ class SPOUT_DLLEXP Spout {
 	bool CreateReceiver(char* name, unsigned int &width, unsigned int &height, bool bUseActive = false);
 	void ReleaseReceiver(); 
 
-	bool ReceiveTexture(char* Sendername, unsigned int &width, unsigned int &height, GLuint TextureID = 0, GLuint TextureTarget = 0, GLuint HostFBO=0);
-	bool ReceiveImage(char* Sendername, unsigned int &width, unsigned int &height, unsigned char* pixels, GLenum glFormat = GL_RGBA);
+	bool ReceiveTexture(char* Sendername, unsigned int &width, unsigned int &height, GLuint TextureID = 0, GLuint TextureTarget = 0, bool bInvert = false, GLuint HostFBO=0);
+	bool ReceiveImage(char* Sendername, unsigned int &width, unsigned int &height, unsigned char* pixels, GLenum glFormat = GL_RGBA, GLuint HostFBO=0);
 	
 	bool GetImageSize (char* sendername, unsigned int &width, unsigned int &height, bool &bMemoryMode);	
 
 	bool BindSharedTexture();
 	bool UnBindSharedTexture();
 	
-	bool DrawSharedTexture(float max_x = 1.0, float max_y = 1.0, float aspect = 1.0);
+	bool DrawSharedTexture(float max_x = 1.0, float max_y = 1.0, float aspect = 1.0, bool bInvert = true);
 	bool DrawToSharedTexture(GLuint TextureID, GLuint TextureTarget, unsigned int width, unsigned int height, float max_x = 1.0, float max_y = 1.0, float aspect = 1.0, bool bInvert = true, GLuint HostFBO = 0);
 
 	int  GetSenderCount();
 	bool GetSenderName(int index, char* sendername, int MaxSize = 256);
-	bool GetSenderInfo(char* sendername, unsigned int &width, unsigned int &height, HANDLE &dxShareHandle, DWORD &dwFormat);
+	bool GetSenderInfo(const char* sendername, unsigned int &width, unsigned int &height, HANDLE &dxShareHandle, DWORD &dwFormat);
 	bool GetActiveSender(char* Sendername);
 	bool SetActiveSender(char* Sendername);
 	
 	// Utilities
-	bool SetDX9(bool bDX9 = true); // set to use DirectX 9 (default is DirectX 11)
-	bool GetDX9();
+	bool SetDX9(bool bDX9 = true); // User request to use DirectX 9 (default is DirectX 11)
+	bool GetDX9(); // Return the flag that has been set
+
+
+	int GetNumAdapters(); // Get the number of graphics adapters in the system
+	bool GetAdapterName(int index, char *adaptername, int maxchars); // Get an adapter name
+	bool SetAdapter(int index = 0); // Set required graphics adapter for output
+	int GetAdapter(); // Get the SpoutDirectX global adapter index
 
 	bool GetMemoryShareMode();
 	bool SetMemoryShareMode(bool bMemory = true);
@@ -100,11 +115,17 @@ class SPOUT_DLLEXP Spout {
 	bool SelectSenderPanel(const char* message = NULL);
 
 	bool CheckSpoutPanel(); // Public for debugging
+	bool OpenSpout(); // Public for debugging
+	
+	// Registry read/write
+	bool WritePathToRegistry(const char *filepath, const char *subkey, const char *valuename);
+	bool ReadPathFromRegistry(const char *filepath, const char *subkey, const char *valuename);
 	
 	spoutGLDXinterop interop; // Opengl/directx interop texture sharing
 
 	// For debugging only - to disable/enable texture access locks in SpoutDirectX.cpp
 	void UseAccessLocks(bool bUseLocks);
+	void SpoutCleanUp(bool bExit = false);
 
 
 /*
@@ -160,18 +181,21 @@ class SPOUT_DLLEXP Spout {
 	SHELLEXECUTEINFOA ShExecInfo;
 
 	bool GLDXcompatible();
-	bool OpenSpout();
 	bool OpenReceiver(char *name, unsigned int& width, unsigned int& height);
 	bool InitReceiver(HWND hwnd, char* sendername, unsigned int width, unsigned int height, bool bMemoryMode);
 	bool InitSender(HWND hwnd, char* sendername, unsigned int width, unsigned int height, DWORD dwFormat, bool bMemoryMode);
 	bool InitMemoryShare(bool bReceiver);
 	bool ReleaseMemoryShare();
-	void SpoutCleanUp(bool bExit = false);
+	// void SpoutCleanUp(bool bExit = false);
 	bool FlipVertical(unsigned char *src, unsigned int width, unsigned int height, GLenum glFormat = GL_RGB);
 
 	// FPS calcs - TODO cleanup
 	double timeNow, timeThen, elapsedTime, frameTime, lastFrameTime, frameRate, fps, PCFreq, waitMillis, millisForFrame;
 	__int64 CounterStart;
+
+	// Find a file version
+	bool FindFileVersion(const char *filepath, DWORD &versMS, DWORD &versLS);
+
 	// TODO - used ? cleanup
 	void StartCounter();
 	double GetCounter();

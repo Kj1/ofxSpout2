@@ -2,7 +2,7 @@
 
 			SpoutReceiver.h
 
-		Copyright (c) 2014>, Lynn Jarvis. All rights reserved.
+		Copyright (c) 2014-2015, Lynn Jarvis. All rights reserved.
 
 		Redistribution and use in source and binary forms, with or without modification, 
 		are permitted provided that the following conditions are met:
@@ -40,18 +40,18 @@ class SPOUT_DLLEXP SpoutReceiver {
     ~SpoutReceiver();
 
 	bool CreateReceiver(char* Sendername, unsigned int &width, unsigned int &height, bool bUseActive = false);
-	bool ReceiveTexture(char* Sendername, unsigned int &width, unsigned int &height, GLuint TextureID = 0, GLuint TextureTarget = 0, GLuint HostFBO = 0);
-	bool ReceiveImage  (char* Sendername, unsigned int &width, unsigned int &height, unsigned char * pixels, GLenum glFormat = GL_RGB);
+	bool ReceiveTexture(char* Sendername, unsigned int &width, unsigned int &height, GLuint TextureID = 0, GLuint TextureTarget = 0, bool bInvert = false, GLuint HostFBO = 0);
+	bool ReceiveImage  (char* Sendername, unsigned int &width, unsigned int &height, unsigned char * pixels, GLenum glFormat = GL_RGBA, GLuint HostFBO = 0);
 	bool GetImageSize  (char* Sendername, unsigned int &width, unsigned int &height, bool &bMemoryMode);
 	void ReleaseReceiver(); 
 
 	bool BindSharedTexture();
 	bool UnBindSharedTexture();
-	bool DrawSharedTexture(float max_x = 1.0, float max_y = 1.0, float aspect = 1.0);
+	bool DrawSharedTexture(float max_x = 1.0, float max_y = 1.0, float aspect = 1.0, bool bInvert = true);
 	
 	int  GetSenderCount();
 	bool GetSenderName(int index, char* Sendername, int MaxSize = 256);
-	bool GetSenderInfo(char* Sendername, unsigned int &width, unsigned int &height, HANDLE &dxShareHandle, DWORD &dwFormat);
+	bool GetSenderInfo(const char* Sendername, unsigned int &width, unsigned int &height, HANDLE &dxShareHandle, DWORD &dwFormat);
 
 	bool GetActiveSender(char* Sendername);
 	bool SetActiveSender(char* Sendername);
@@ -66,6 +66,11 @@ class SPOUT_DLLEXP SpoutReceiver {
 
 	void SetDX9compatible(bool bCompatible = true);
 	bool GetDX9compatible();
+
+	int GetNumAdapters(); // Get the number of graphics adapters in the system
+	bool GetAdapterName(int index, char *adaptername, int maxchars); // Get an adapter name
+	bool SetAdapter(int index = 0); // Set required graphics adapter for output
+	int GetAdapter(); // Get the current adapter index
 
 	bool SetVerticalSync(bool bSync = true);
 	int GetVerticalSync();

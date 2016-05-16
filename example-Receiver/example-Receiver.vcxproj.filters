@@ -7,7 +7,16 @@
 		<ClCompile Include="src\main.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2.cpp">
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.cpp">
+			<Filter>addons\ofxSpout2\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.cpp">
 			<Filter>addons\ofxSpout2\src</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\..\addons\ofxSpout2\libs\src\SpoutDirectX.cpp">
@@ -65,7 +74,13 @@
 		<ClInclude Include="src\ofApp.h">
 			<Filter>src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2.h">
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.h">
+			<Filter>addons\ofxSpout2\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.h">
 			<Filter>addons\ofxSpout2\src</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxSpout2\libs\include\Spout.h">

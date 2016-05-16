@@ -3,41 +3,26 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofSetFrameRate(60);
-	kitten = ofImage("kitten.jpg");
-	snow = ofImage("snow.jpg");
-	fbo.allocate(kitten.width + snow.width, snow.height);
+
+	spoutReceiver.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	//generate some content
-	fbo.begin();
-	ofClear(0,0,0,255);
-	kitten.draw(0,0);
-	ofDrawBitmapString("OF Frame " + ofToString(ofGetFrameNum()),10,kitten.height + 30);
-	ofTranslate(kitten.width, 0);
-	ofSetColor((ofGetElapsedTimeMillis()/10)%255, (ofGetElapsedTimeMillis()/11)%255, (ofGetElapsedTimeMillis()/13)%255); 
-	snow.draw(0,0);
-	fbo.end();
 
-
-
-	//Spout
-	spout.sendTexture(kitten.getTextureReference(), "kitten");
-	spout.sendTexture(snow.getTextureReference(), "snow");
-	spout.sendTexture(fbo.getTextureReference(), "composition");
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	ofSetColor(255);
-	ofClear(0,0,0,255);
-	fbo.draw(0,0);
+	ofClear(255, 0, 0);
 
+	spoutReceiver.updateTexture();
+
+	spoutReceiver.getTexture().draw(10, 10);
 }
 
 void ofApp::exit() {
-	spout.exit();
+	spoutReceiver.exit();
 }
 
 //--------------------------------------------------------------
@@ -62,7 +47,11 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	if (button == 2) { // rh button
+					   // Open the sender selection panel
+					   // Spout must have been installed
+		spoutReceiver.showSenders();
+	}
 }
 
 //--------------------------------------------------------------

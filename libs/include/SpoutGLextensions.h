@@ -19,7 +19,7 @@
 //			FFGL - SpoutReceiver, SpoutSender				 -		 -		 -		 +		 +		 +
 //			MAX - jit.gl.spoutsender, jit.gl.spoutreceiver	 -		 -		 -		 +		 +		 +
 //			PROCESSING - Jspout JNI dll						 +		 -		 -		 +		 +		 +
-//			SpoutCam										 -		 -		 +		 +		 +		 +
+//			SpoutCam										 +		 -		 -		 +		 +		 +
 //			SpoutPanel										 +		 -		 -		 +		 +		 +
 //			SpoutTray										 -		 -		 +		 +		 +		 +
 //			Spout dll										 +		 +		 -		 +		 +		 +
@@ -27,6 +27,8 @@
 //			OpenFrameWorks									 +		 -		 -		 +		 +		 +
 //			Cinder											 +		 -		 -		 +		 +		 +
 //
+//			03.11.14 - added additional defines for framebuffer status checks
+//			02.01.15 - added GL_BGR for SpoutCam
 //
 /*
 
@@ -126,8 +128,17 @@
 #define WGL_ACCESS_WRITE_DISCARD_NV		0x0002
 
 #define GL_CLAMP_TO_EDGE				0x812F
+#define GL_BGR							0x80E0 // 02.01.15 - For SpoutCam
 
 #ifndef USE_GLEW
+
+// ----------------------------
+// Memory management extensions
+// ----------------------------
+#define GL_GPU_MEM_INFO_TOTAL_AVAILABLE_MEM_NVX 0x9048
+#define GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX 0x9049
+
+
 //----------------------
 // GL interop extensions
 //----------------------
@@ -153,6 +164,7 @@ extern PFNWGLDXUNLOCKOBJECTSNVPROC			wglDXUnlockObjectsNV;
 //---------------
 #ifdef USE_FBO_EXTENSIONS
 #define GL_INVALID_FRAMEBUFFER_OPERATION_EXT                0x0506
+#define GL_FRAMEBUFFER_UNDEFINED_EXT						0x8219
 #define GL_MAX_RENDERBUFFER_SIZE_EXT                        0x84E8
 #define GL_FRAMEBUFFER_BINDING_EXT                          0x8CA6
 #define GL_RENDERBUFFER_BINDING_EXT                         0x8CA7
@@ -200,6 +212,8 @@ extern PFNWGLDXUNLOCKOBJECTSNVPROC			wglDXUnlockObjectsNV;
 #define GL_STENCIL_INDEX4_EXT                               0x8D47
 #define GL_STENCIL_INDEX8_EXT                               0x8D48
 #define GL_STENCIL_INDEX16_EXT                              0x8D49
+#define GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT			0x8D56
+#define GL_FRAMEBUFFER_INCOMPLETE_LAYER_TARGETS_EXT			0x8DA8
 
 typedef void   (APIENTRY *glBindFramebufferEXTPROC)			(GLenum target, GLuint framebuffer);
 typedef void   (APIENTRY *glBindRenderbufferEXTPROC)		(GLenum target, GLuint renderbuffer);
