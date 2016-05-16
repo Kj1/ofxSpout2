@@ -173,7 +173,8 @@
 	<ItemGroup>
 		<ClCompile Include="src\main.cpp" />
 		<ClCompile Include="src\ofApp.cpp" />
-		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxSpout2\libs\src\SpoutDirectX.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxSpout2\libs\src\SpoutGLDXinterop.cpp" />
 		<ClCompile Include="..\..\..\addons\ofxSpout2\libs\src\SpoutGLextensions.cpp" />
@@ -186,7 +187,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h" />
-		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2.h" />
+		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Receiver.h" />
+		<ClInclude Include="..\..\..\addons\ofxSpout2\src\ofxSpout2Sender.h" />
 		<ClInclude Include="..\..\..\addons\ofxSpout2\libs\include\Spout.h" />
 		<ClInclude Include="..\..\..\addons\ofxSpout2\libs\include\SpoutCommon.h" />
 		<ClInclude Include="..\..\..\addons\ofxSpout2\libs\include\SpoutDirectX.h" />

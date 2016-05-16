@@ -1,11 +1,13 @@
-#include "ofxSpout2.h"
+#include "ofxSpout2Sender.h"
 
-ofxSpout2::ofxSpout2() {
+using namespace ofxSpout2;
+
+Sender::Sender() {
 	//ofAddListener(ofEvents().exit, this, &ofxSpout2::stopSpout);
 }
 
 //--------------------------------------------------------------
-void ofxSpout2::sendTexture(ofTexture& t, string name)
+void Sender::sendTexture(ofTexture& t, string name)
 {
 	int width = t.getWidth();
 	int height = t.getHeight();
@@ -67,7 +69,7 @@ void ofxSpout2::sendTexture(ofTexture& t, string name)
 }
 
 //--------------------------------------------------------------
-void ofxSpout2::exit()
+void Sender::exit()
 {
 	for (int i = 0; i <spoutSenderList.size();i++) {
 		spoutSenderList[i]->ReleaseSender(); 

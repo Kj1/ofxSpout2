@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxSpout2.h"
+#include "ofxSpout2Sender.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,5 +26,5 @@ class ofApp : public ofBaseApp{
 		ofImage kitten;
 		ofFbo fbo;
 
-		ofxSpout2 spout;
+		ofxSpout2::Sender spout;
 };
