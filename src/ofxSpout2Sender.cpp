@@ -9,6 +9,11 @@ Sender::Sender() {
 //--------------------------------------------------------------
 void Sender::sendTexture(ofTexture& t, string name)
 {
+    if (!t.isAllocated()) {
+        ofLogNotice("ofxSpout2Sender", "texture to send it not allocated for sender name %s.", name.c_str());
+        return;
+    }
+
 	int width = t.getWidth();
 	int height = t.getHeight();
 
